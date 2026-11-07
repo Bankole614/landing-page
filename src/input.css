@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Kerb stripe: the one signature motif, reused on hero rule + footer */
+.kerb { background: repeating-linear-gradient(90deg, #e10600 0 20px, #f2f1ec 20px 40px); }
+.track-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.4s ease-out .2s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .track-draw { animation: none; stroke-dashoffset: 0; }
+  html { scroll-behavior: auto; }
+}

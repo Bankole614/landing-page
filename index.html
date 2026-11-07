@@ -9,42 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-  <!-- Tailwind Play CDN: fine for prototyping. For production, compile with the Tailwind CLI. -->
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            asphalt: '#0c0d10',
-            tarmac: '#15171c',
-            pit: '#1d2027',
-            kerb: '#e10600',
-            tyre: '#ffd60a',
-            chalk: '#f2f1ec',
-            fog: '#9a9ea8',
-            sector: '#22c55e',
-            purple: '#a855f7',
-          },
-          fontFamily: {
-            display: ['"Barlow Condensed"', 'Impact', 'sans-serif'],
-            sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
-          },
-        },
-      },
-    };
-  </script>
-  <style>
-    /* Kerb stripe: the one signature motif, reused on hero rule + footer */
-    .kerb { background: repeating-linear-gradient(90deg, #e10600 0 20px, #f2f1ec 20px 40px); }
-    .track-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.4s ease-out .2s forwards; }
-    @keyframes draw { to { stroke-dashoffset: 0; } }
-    @media (prefers-reduced-motion: reduce) {
-      .track-draw { animation: none; stroke-dashoffset: 0; }
-      html { scroll-behavior: auto; }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-asphalt font-sans text-chalk antialiased selection:bg-kerb selection:text-white">
 

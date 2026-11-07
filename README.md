@@ -1,22 +1,27 @@
-# Formula Apex — Standalone Portfolio Landing Page
+# Formula Apex — Portfolio Landing Page
 
-This folder contains the complete, standalone marketing and portfolio showcase landing page for **Formula Apex**.
+This folder contains the marketing and portfolio showcase landing page for **Formula Apex**. Tailwind CSS is compiled ahead of time; the deployed page does not load Tailwind's Play CDN or need Node.js at runtime.
 
 ## Contents
 
-- `index.html`: The fully self-contained landing page (zero build step, no npm/node dependencies, responsive glassmorphic styling, embedded SVG icons, inline SVG favicon).
+- `index.html`: Landing page markup, embedded SVG icons, and inline SVG favicon.
+- `src/input.css`: Tailwind entry point and custom animations/styles.
+- `tailwind.config.js`: Tailwind theme and HTML content scan configuration.
+- `styles.css`: Generated, minified stylesheet loaded by the page.
 
-## How to Move or Deploy Standalone
+## Build
 
-You can move this entire `landing-page` folder anywhere on your computer or into a separate repository:
+Install the build dependency and generate the production stylesheet:
 
-### 1. Run Locally
-Simply double-click `index.html` to open it in any web browser.
+```sh
+npm install
+npm run build
+```
 
-### 2. Deploy to Vercel / Netlify / Cloudflare Pages / GitHub Pages
-- **GitHub Pages:** Create a repository with this folder's contents and enable GitHub Pages under **Settings > Pages > Deploy from a branch (`main`)**.
-- **Netlify / Vercel:** Drag and drop this folder onto Netlify Drop (`app.netlify.com/drop`) or run `npx vercel` inside this folder.
+For local preview, open `index.html` after building or serve this folder with any static file server. Node.js is needed only to install dependencies and build, not to host the site.
 
-### 3. Configure the "Play Game" Link
-In `index.html`, search for `../index.html` and replace it with your hosted game URL (e.g., `https://formula-apex.vercel.app` or your domain).
+## Deploy
 
+Deploy `index.html`, `styles.css`, and `Formula_Apex_Case_Study.pdf` together to any static host, including GitHub Pages, Netlify, Vercel, or Cloudflare Pages. Run `npm run build` as the host's build command when building from source; the publish directory is this folder. If deploying without a build step, include the already-generated `styles.css`.
+
+The "Play game" buttons currently link to `https://apex.bankole.xyz`; update those links in `index.html` if the game URL changes.
