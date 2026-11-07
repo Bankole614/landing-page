@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formula Apex — 3D Web Grand Prix Simulator & Engineering Portfolio</title>
+  <meta name="description" content="Formula Apex: a deterministic 60 FPS 3D Grand Prix simulator running in the browser with WebGL, procedural Web Audio and live telemetry." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolygon points='5,3 19,12 5,21' fill='%23e10600'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind Play CDN: fine for prototyping. For production, compile with the Tailwind CLI. -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            asphalt: '#0c0d10',
+            tarmac: '#15171c',
+            pit: '#1d2027',
+            kerb: '#e10600',
+            tyre: '#ffd60a',
+            chalk: '#f2f1ec',
+            fog: '#9a9ea8',
+            sector: '#22c55e',
+            purple: '#a855f7',
+          },
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'Impact', 'sans-serif'],
+            sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Kerb stripe: the one signature motif, reused on hero rule + footer */
+    .kerb { background: repeating-linear-gradient(90deg, #e10600 0 20px, #f2f1ec 20px 40px); }
+    .track-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.4s ease-out .2s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .track-draw { animation: none; stroke-dashoffset: 0; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body class="bg-asphalt font-sans text-chalk antialiased selection:bg-kerb selection:text-white">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-asphalt/85 backdrop-blur-md">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
+      <a href="index.html" class="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-tyre">
+        <span class="flex h-8 w-8 items-center justify-center rounded-md bg-kerb">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+        </span>
+        <span class="font-display text-2xl font-bold italic leading-none tracking-tight">Formula Apex</span>
+      </a>
+
+      <nav class="hidden md:block" aria-label="Primary">
+        <ul class="flex items-center gap-8 text-sm text-fog">
+          <li><a href="#features" class="transition hover:text-chalk">Engine</a></li>
+          <li><a href="#physics" class="transition hover:text-chalk">Physics</a></li>
+          <li><a href="#case-study" class="transition hover:text-chalk">Case study</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="https://apex.bankole.xyz" target="_blank" rel="noopener noreferrer" title="Launch the racing game"
+           class="inline-flex items-center gap-2 rounded-md bg-kerb px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#ff1a0f] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tyre">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          Play game
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-16 md:pt-24 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-tarmac px-3 py-1 text-xs text-fog">
+            <span class="h-2 w-2 rounded-full bg-sector"></span>
+            Playable in your browser, no install
+          </p>
+          <h1 class="font-display text-6xl font-extrabold italic leading-[0.92] tracking-tight sm:text-7xl lg:text-8xl">
+            A full Grand Prix,<br>built for the web.
+          </h1>
+          <div class="kerb mt-7 h-2 w-40 rounded-sm" aria-hidden="true"></div>
+          <p class="mt-7 max-w-xl text-lg leading-relaxed text-fog">
+            Formula Apex is a 3D racing simulator written in TypeScript and Three.js. It runs a fixed 60 Hz physics tick, synthesizes every engine and tyre sound in code, and streams multiplayer telemetry over WebSockets.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="https://apex.bankole.xyz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-md bg-kerb px-6 py-3 text-base font-semibold text-white shadow-[0_8px_28px_-8px_rgba(225,6,0,0.7)] transition hover:-translate-y-0.5 hover:bg-[#ff1a0f]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+              Play the simulator
+            </a>
+          </div>
+        </div>
+
+        <!-- Live circuit: the memorable moment -->
+        <div class="relative rounded-2xl border border-white/10 bg-tarmac p-4 sm:p-6">
+          <div class="mb-3 flex items-center justify-between font-mono text-xs text-fog">
+            <span>Circuit preview</span>
+            <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-kerb"></span>Live lap</span>
+          </div>
+          <svg viewBox="0 0 400 260" class="w-full" role="img" aria-label="Animated top-down view of a race circuit with a car completing a lap">
+            <path id="circuit" d="M70 190 C40 190 30 150 60 130 L130 90 C160 72 190 80 205 100 C225 128 250 120 275 90 C300 60 350 55 365 90 C380 125 340 150 310 160 L250 185 C225 195 215 215 185 220 L110 225 C90 226 80 205 70 190 Z"
+                  fill="none" stroke="#2a2e38" stroke-width="22" stroke-linejoin="round"/>
+            <path d="M70 190 C40 190 30 150 60 130 L130 90 C160 72 190 80 205 100 C225 128 250 120 275 90 C300 60 350 55 365 90 C380 125 340 150 310 160 L250 185 C225 195 215 215 185 220 L110 225 C90 226 80 205 70 190 Z"
+                  pathLength="1" fill="none" stroke="#f2f1ec" stroke-width="1.5" stroke-dasharray="1" class="track-draw" stroke-linejoin="round"/>
+            <!-- start / finish -->
+            <rect x="64" y="176" width="3" height="28" fill="#f2f1ec"/>
+            <circle r="6" fill="#e10600" stroke="#fff" stroke-width="2">
+              <animateMotion id="carAnim" dur="9s" repeatCount="indefinite" rotate="auto"><mpath href="#circuit"/></animateMotion>
+            </circle>
+          </svg>
+          <div class="mt-3 grid grid-cols-3 gap-2 font-mono text-xs">
+            <div class="rounded-md bg-pit px-3 py-2"><div class="text-fog">Tick</div><div class="text-sector">60 Hz</div></div>
+            <div class="rounded-md bg-pit px-3 py-2"><div class="text-fog">Top speed</div><div class="text-chalk">340+ km/h</div></div>
+            <div class="rounded-md bg-pit px-3 py-2"><div class="text-fog">Engine</div><div class="text-tyre">4k–15k rpm</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timing tower stats -->
+    <section class="border-y border-white/10 bg-tarmac" aria-label="Key numbers">
+      <div class="mx-auto max-w-6xl px-5 py-14">
+        <h2 class="font-display text-4xl font-bold italic tracking-tight">By the numbers</h2>
+        <p class="mt-2 max-w-xl text-fog">Four measurements that shaped how the engine was built.</p>
+        <dl class="mt-8 divide-y divide-white/10 overflow-hidden rounded-xl border border-white/10 bg-asphalt">
+          <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
+            <span class="bg-sector"></span>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">60 FPS</dd>
+            <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
+              <strong class="block text-base font-semibold text-chalk">Deterministic accumulator</strong>
+              A fixed tick under 16.6 ms stops cars tunneling through barriers on 60 to 144 Hz displays.
+            </dt>
+          </div>
+          <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
+            <span class="bg-kerb"></span>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">4.2 MB</dd>
+            <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
+              <strong class="block text-base font-semibold text-chalk">Lean production bundle</strong>
+              Loads fast, with no multi-gigabyte install and no browser extension.
+            </dt>
+          </div>
+          <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
+            <span class="bg-tyre"></span>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">0 files</dd>
+            <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
+              <strong class="block text-base font-semibold text-chalk">Procedural Web Audio</strong>
+              Engine harmonics, wind drag, tyre squeal and pit radio are all synthesized live.
+            </dt>
+          </div>
+          <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
+            <span class="bg-purple"></span>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">&lt;45 ms</dd>
+            <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
+              <strong class="block text-base font-semibold text-chalk">Multiplayer telemetry delta</strong>
+              A FastAPI WebSocket multiplexer keeps live paddock racing in sync.
+            </dt>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Features: bento -->
+    <section id="features" class="mx-auto max-w-6xl scroll-mt-20 px-5 py-20">
+      <h2 class="font-display text-5xl font-bold italic tracking-tight">Engineered for zero latency and real feel</h2>
+      <p class="mt-3 max-w-2xl text-lg text-fog">
+        Modern web standards and game engineering come together to give the browser an authentic Grand Prix experience.
+      </p>
+
+      <div class="mt-12 grid gap-4 md:grid-cols-6">
+        <!-- Physics: large -->
+        <article id="physics" class="scroll-mt-24 rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-4">
+          <h3 class="font-display text-3xl font-bold italic">Sub-stepped physics integrator</h3>
+          <p class="mt-3 max-w-xl text-fog">
+            Semi-implicit Euler integration runs inside a fixed 60 Hz accumulator. Above 340 km/h, each tick subdivides into continuous raycast tests, so cars never phase through barriers.
+          </p>
+          <div class="mt-6 flex h-10 items-end gap-1" aria-hidden="true">
+            <span class="w-full rounded-sm bg-kerb/90" style="height:100%"></span>
+            <span class="w-full rounded-sm bg-kerb/70" style="height:70%"></span>
+            <span class="w-full rounded-sm bg-kerb/55" style="height:50%"></span>
+            <span class="w-full rounded-sm bg-kerb/40" style="height:35%"></span>
+            <span class="w-full rounded-sm bg-kerb/30" style="height:25%"></span>
+            <span class="w-full rounded-sm bg-kerb/20" style="height:18%"></span>
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-2">
+          <h3 class="font-display text-3xl font-bold italic">Tyre wear and weather</h3>
+          <p class="mt-3 text-sm leading-relaxed text-fog">
+            Non-linear Pacejka grip fades as rubber wears, costing up to 55% of peak cornering grip. Intermediate and wet stops become real strategy calls.
+          </p>
+          <div class="mt-5 h-2 overflow-hidden rounded-full bg-pit" aria-hidden="true">
+            <div class="h-full w-[45%] rounded-full bg-gradient-to-r from-kerb to-tyre"></div>
+          </div>
+          <p class="mt-2 font-mono text-xs text-fog">Worn tyre: 45% grip left</p>
+        </article>
+
+        <article class="rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-2">
+          <h3 class="font-display text-3xl font-bold italic">Web Audio synthesizer</h3>
+          <p class="mt-3 text-sm leading-relaxed text-fog">
+            No recorded audio. Multi-harmonic FM oscillators follow engine RPM, with low-pass wind filters and band-pass tyre scrub.
+          </p>
+        </article>
+
+        <article class="rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-4">
+          <h3 class="font-display text-3xl font-bold italic">Slipstream and DRS</h3>
+          <p class="mt-3 max-w-xl text-fog">
+            Sit inside a 120 m wake cone behind a rival and drag drops by up to 22%. Open the rear wing on a DRS straight for another 28% off the top end.
+          </p>
+          <div class="mt-6 grid grid-cols-2 gap-3 font-mono text-sm sm:max-w-md">
+            <div class="rounded-lg bg-pit px-4 py-3"><span class="text-fog">Tow</span> <span class="float-right text-sector">−22% drag</span></div>
+            <div class="rounded-lg bg-pit px-4 py-3"><span class="text-fog">DRS</span> <span class="float-right text-sector">−28% drag</span></div>
+          </div>
+        </article>
+
+        <article class="rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-3">
+          <h3 class="font-display text-3xl font-bold italic">Bezier track architect</h3>
+          <p class="mt-3 text-sm leading-relaxed text-fog">
+            Design circuits in the browser. Place spline points, check curvature to set AI braking zones, and export the track as portable JSON.
+          </p>
+        </article>
+
+        <article class="rounded-2xl border border-white/10 bg-tarmac p-7 md:col-span-3">
+          <h3 class="font-display text-3xl font-bold italic">Installable on mobile</h3>
+          <p class="mt-3 text-sm leading-relaxed text-fog">
+            A service worker caches the game offline. A virtual steering joystick with haptic feedback and fullscreen launch work on iOS and Android.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Case study -->
+    <section id="case-study" class="mx-auto max-w-6xl scroll-mt-20 px-5 pb-20">
+      <div class="grid gap-10 rounded-3xl border border-kerb/30 bg-gradient-to-br from-kerb/10 via-tarmac to-tarmac p-8 md:p-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div>
+          <p class="text-sm font-medium text-kerb">Official documentation</p>
+          <h2 class="mt-2 font-display text-5xl font-bold italic leading-none tracking-tight">Technical architecture and engineering case study</h2>
+          <p class="mt-5 max-w-lg text-fog">
+            A four-page write-up for engineering recruiters, systems architects and technical reviewers.
+          </p>
+          <a href="Formula_Apex_Case_Study.pdf" target="_blank" rel="noopener noreferrer"
+             class="mt-7 inline-flex items-center gap-2 rounded-md bg-kerb px-6 py-3 font-semibold text-white transition hover:bg-[#ff1a0f]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Open case study
+          </a>
+          <ol class="mt-7 space-y-3 text-sm">
+            <li class="flex gap-4"><span class="w-14 shrink-0 font-mono text-fog">Page 1</span><span>Executive summary, role, KPI highlights and the problem-solution matrix</span></li>
+            <li class="flex gap-4"><span class="w-14 shrink-0 font-mono text-fog">Page 2</span><span>Core engine pillars, user journey and decoupled state synchronization</span></li>
+            <li class="flex gap-4"><span class="w-14 shrink-0 font-mono text-fog">Page 3</span><span>Mathematical models: Pacejka curves, tow cones and Web Audio DSP</span></li>
+            <li class="flex gap-4"><span class="w-14 shrink-0 font-mono text-fog">Page 4</span><span>Subsystem spec table and four critical bug post-mortems</span></li>
+          </ol>
+        </div>
+
+        <!-- Case study mock, tilted stack -->
+        <div class="relative mx-auto w-full max-w-sm" aria-hidden="true">
+          <div class="absolute inset-0 translate-x-3 translate-y-3 rotate-3 rounded-lg bg-white/10"></div>
+          <div class="relative -rotate-1 rounded-lg bg-white p-5 text-slate-900 shadow-2xl">
+            <div class="flex justify-between border-b border-slate-200 pb-2 text-[9px] font-semibold text-slate-500">
+              <span>Formula Apex · Systems case study</span><span>Page 1 of 4</span>
+            </div>
+            <div class="mt-3 font-display text-xl font-bold italic leading-tight">High-performance 3D Grand Prix engine</div>
+            <div class="mt-3 h-1 w-11/12 rounded bg-slate-200"></div>
+            <div class="mt-1.5 h-1 w-3/4 rounded bg-slate-200"></div>
+            <div class="mt-3 grid grid-cols-2 gap-2 rounded bg-slate-50 p-2 text-[9px] text-slate-600">
+              <div><b class="block text-slate-900">Role</b>Lead systems architect</div>
+              <div><b class="block text-slate-900">Stack</b>TypeScript, Three.js</div>
+              <div><b class="block text-slate-900">Frame budget</b>60 FPS deterministic</div>
+              <div><b class="block text-slate-900">Audio</b>0 external files</div>
+            </div>
+            <div class="mt-3 h-1 w-full rounded bg-slate-200"></div>
+            <div class="mt-1.5 h-1 w-5/6 rounded bg-slate-200"></div>
+            <div class="mt-1.5 h-1 w-3/5 rounded bg-slate-200"></div>
+            <div class="mt-3 font-mono text-[8px] font-semibold text-red-600">Engineering challenges vs solutions</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="border-t border-white/10 bg-tarmac">
+      <div class="mx-auto max-w-3xl px-5 py-20 text-center">
+        <h2 class="font-display text-5xl font-bold italic tracking-tight sm:text-6xl">Lights out. Your lap.</h2>
+        <p class="mx-auto mt-4 max-w-lg text-fog">
+          No installs or accounts. Open the game, check the telemetry, or read how it was built.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="https://apex.bankole.xyz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-md bg-kerb px-7 py-3 font-semibold text-white transition hover:bg-[#ff1a0f]">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            Launch the racing game
+          </a>
+        </div>
+      </div>
+      <div class="kerb h-2" aria-hidden="true"></div>
+      <footer class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-fog">
+        <p><strong class="font-semibold text-chalk">Formula Apex</strong> · Championship Edition, built by the lead systems architect.</p>
+        <p class="font-mono">TypeScript · Three.js (WebGL2) · Web Audio API · Python FastAPI</p>
+      </footer>
+    </section>
+  </main>
+
+  <script>
+    // Respect reduced motion: park the car on the start line instead of looping.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const a = document.getElementById('carAnim');
+      if (a) a.remove();
+    }
+  </script>
+</body>
+</html>
