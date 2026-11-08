@@ -22,6 +22,6 @@ For local preview, open `index.html` after building or serve this folder with an
 
 ## Deploy
 
-Deploy `index.html`, `styles.css`, and `Formula_Apex_Case_Study.pdf` together to any static host, including GitHub Pages, Netlify, Vercel, or Cloudflare Pages. Run `npm run build` as the host's build command when building from source; the publish directory is this folder. If deploying without a build step, include the already-generated `styles.css`.
+Deploy `index.html`, `styles.css`, and `Formula_Apex_Case_Study.pdf` together to any static host, including GitHub Pages, Netlify, Vercel, or Cloudflare Pages. Run `npm run build` as the host's build command when building from source; the publish directory is this folder. `vercel.json` configures Vercel to use the repository root as its output directory. If deploying without a build step, include the already-generated `styles.css`.
 
 The "Play game" buttons currently link to `https://apex.bankole.xyz`; update those links in `index.html` if the game URL changes.
