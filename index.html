@@ -51,7 +51,7 @@
           </h1>
           <div class="kerb mt-7 h-2 w-40 rounded-sm" aria-hidden="true"></div>
           <p class="mt-7 max-w-xl text-lg leading-relaxed text-fog">
-            Formula Apex is a 3D racing simulator written in TypeScript and Three.js. It runs a fixed 60 Hz physics tick, synthesizes every engine and tyre sound in code, and streams multiplayer telemetry over WebSockets.
+            Formula Apex is a 3D racing simulator built with Vue 3, TypeScript, and Three.js. It runs a decoupled 60 Hz physics tick, synthesizes every engine and tyre sound in code, and streams multiplayer telemetry over WebSockets.
           </p>
           <div class="mt-9 flex flex-wrap gap-3">
             <a href="https://apex.bankole.xyz" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-md bg-kerb px-6 py-3 text-base font-semibold text-white shadow-[0_8px_28px_-8px_rgba(225,6,0,0.7)] transition hover:-translate-y-0.5 hover:bg-[#ff1a0f]">
@@ -103,15 +103,15 @@
           </div>
           <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
             <span class="bg-kerb"></span>
-            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">4.2 MB</dd>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">1.3 MB</dd>
             <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
-              <strong class="block text-base font-semibold text-chalk">Lean production bundle</strong>
-              Loads fast, with no multi-gigabyte install and no browser extension.
+              <strong class="block text-base font-semibold text-chalk">Lean code-split bundle</strong>
+              ~380 KB gzipped with lazy-loaded 3D chunks — no install and no browser extension.
             </dt>
           </div>
           <div class="grid grid-cols-[6px_1fr] items-stretch sm:grid-cols-[6px_190px_1fr]">
             <span class="bg-tyre"></span>
-            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">0 files</dd>
+            <dd class="px-5 py-5 font-display text-4xl font-bold italic sm:order-2 sm:self-center sm:px-0">0 SFX files</dd>
             <dt class="col-start-2 px-5 pb-5 text-sm text-fog sm:col-start-3 sm:row-start-1 sm:self-center sm:pb-0">
               <strong class="block text-base font-semibold text-chalk">Procedural Web Audio</strong>
               Engine harmonics, wind drag, tyre squeal and pit radio are all synthesized live.
@@ -232,9 +232,9 @@
             <div class="mt-1.5 h-1 w-3/4 rounded bg-slate-200"></div>
             <div class="mt-3 grid grid-cols-2 gap-2 rounded bg-slate-50 p-2 text-[9px] text-slate-600">
               <div><b class="block text-slate-900">Role</b>Lead systems architect</div>
-              <div><b class="block text-slate-900">Stack</b>TypeScript, Three.js</div>
+              <div><b class="block text-slate-900">Stack</b>Vue 3, TS, Three.js</div>
               <div><b class="block text-slate-900">Frame budget</b>60 FPS deterministic</div>
-              <div><b class="block text-slate-900">Audio</b>0 external files</div>
+              <div><b class="block text-slate-900">Audio</b>0 bundled SFX files</div>
             </div>
             <div class="mt-3 h-1 w-full rounded bg-slate-200"></div>
             <div class="mt-1.5 h-1 w-5/6 rounded bg-slate-200"></div>
@@ -262,7 +262,7 @@
       <div class="kerb h-2" aria-hidden="true"></div>
       <footer class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-fog">
         <p><strong class="font-semibold text-chalk">Formula Apex</strong> · Championship Edition, built by the lead systems architect.</p>
-        <p class="font-mono">TypeScript · Three.js (WebGL2) · Web Audio API · Python FastAPI</p>
+        <p class="font-mono">Vue 3 · Pinia · TypeScript · Three.js (WebGL2) · Web Audio API · FastAPI · Cloudflare R2</p>
       </footer>
     </section>
   </main>
